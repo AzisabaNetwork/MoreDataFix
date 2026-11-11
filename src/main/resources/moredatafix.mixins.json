@@ -4,7 +4,6 @@
   "minVersion": "0.8.7",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MixinConverterItemStackToDataComponents",
-    "MixinV2523"
+    "MixinConverterItemStackToDataComponents"
   ]
 }

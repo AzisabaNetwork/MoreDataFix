@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Mixin(ConverterItemStackToDataComponents.class)
 public class MixinConverterItemStackToDataComponents {
@@ -42,10 +43,18 @@ public class MixinConverterItemStackToDataComponents {
             String oldType = casted.getString("AttributeName");
             String newType = moredatafix$renameAttribute(oldType);
             if (newType != null) {
-                casted.setString("AttributeName", newType);
+                casted.setString("AttributeName", newType.replace("generic.", ""));
             }
-        } else if (inputGeneric != null) {
-            System.out.println("Unknown type encountered while converting attribute: " + inputGeneric + " (" + inputGeneric.getClass().getCanonicalName() + ")");
+            // UUID has to be regenerated because items generated in MythicMobs 4.12.0 have the same UUID
+            //System.out.println(casted.getGeneric("UUID"));
+            UUID random = UUID.randomUUID();
+            casted.setInts("UUID", new int[]{
+                    (int) random.getMostSignificantBits(),
+                    (int) (random.getMostSignificantBits() >> 32),
+                    (int) random.getLeastSignificantBits(),
+                    (int) (random.getLeastSignificantBits() >> 32)
+            });
+            //System.out.println(casted);
         }
     }
 
