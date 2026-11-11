@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "MixinConverterItemStackToDataComponents",
-    "MixinV2523"
+    "MixinV2523",
+    "MixinV3945"
   ]
 }
