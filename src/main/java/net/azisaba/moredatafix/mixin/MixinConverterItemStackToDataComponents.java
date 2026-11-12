@@ -4,6 +4,7 @@ import ca.spottedleaf.dataconverter.minecraft.converters.itemstack.ConverterItem
 import ca.spottedleaf.dataconverter.types.MapType;
 import ca.spottedleaf.dataconverter.types.TypeUtil;
 import com.google.common.collect.ImmutableMap;
+import net.azisaba.moredatafix.ItemNormalization;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -56,6 +57,15 @@ public class MixinConverterItemStackToDataComponents {
             });
             //System.out.println(casted);
         }
+    }
+
+    /**
+     * Remembers the HideFlags before the conversion consumes them (and drops those of components the item does not
+     * have); {@link ItemNormalization} applies them once the item is fully converted.
+     */
+    @Inject(at = @At("HEAD"), method = "convertItem")
+    private static void captureHideFlags(MapType input, CallbackInfoReturnable<MapType> cir) {
+        ItemNormalization.captureHideFlags(input);
     }
 
     @Unique
